@@ -88,10 +88,18 @@ void InvMatrix( float *A, int n, float *A_inv )
 // pseudo inverse : A (m x n)
 void PInvMatrix( float *A, int m, int n, float *A_pseudo )
 {
-    int k;
+    int i, k;
     if( m < n ) k = m;
     else        k = n;
-    float A_trans[n][m], AA_trans[k][k], AA_inv[k][k];
+    float A_trans[n][m], **AA_trans, **AA_inv, *buffer;
+    
+    AA_trans = (float **)malloc(sizeof(float *) * k);
+    AA_inv = (float **)malloc(sizeof(float *) * k);
+    buffer = (float *)malloc(sizeof(float) * k * k * 2);
+    for( i=0; i<k; i += k ) {
+        AA_trans[i] = AA_trans_ + i * k;
+        AA_inv[i] = AA_inv_ + (k + i) * k;
+    }
 
     TransMatrix( A, m, n, *A_trans );
     if( m < n ){ // rank = m : A+ = A_trans*(A*A_trans)_inv
@@ -103,6 +111,10 @@ void PInvMatrix( float *A, int m, int n, float *A_pseudo )
         InvMatrix( *AA_trans, n, *AA_inv );
         MultiMatrix( *AA_inv, *A_trans, n, n, m, A_pseudo );
     }
+
+    free(AA_trans);
+    free(AA_inv);
+    free(buffer);
 }
 
 
