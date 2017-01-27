@@ -97,8 +97,8 @@ void PInvMatrix( float *A, int m, int n, float *A_pseudo )
     AA_inv = (float **)malloc(sizeof(float *) * k);
     buffer = (float *)malloc(sizeof(float) * k * k * 2);
     for( i=0; i<k; i += k ) {
-        AA_trans[i] = AA_trans_ + i * k;
-        AA_inv[i] = AA_inv_ + (k + i) * k;
+        AA_trans[i] = buffer + i * k;
+        AA_inv[i] = buffer + (k + i) * k;
     }
 
     TransMatrix( A, m, n, *A_trans );
