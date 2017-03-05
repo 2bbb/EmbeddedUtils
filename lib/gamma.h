@@ -40,7 +40,7 @@ public:
             ,outMax(arraySize - 1)
             ,gammaVal(1.0)
     {
-        for(uint32_t i  = 0 ; i < gammaArray.size(); ++i){
+        for(size_t i  = 0 ; i < gammaArray.size(); ++i){
             gammaArray[i] = i;
         }
     }
@@ -72,10 +72,18 @@ public:
         makeGammaWithRangeAll(gammaVal ,inMax ,outMax ,gammaArray);
     }
 
+    type operator [](const size_t index) const {
+        return gammaArray[index];
+    }
+
     type& operator [](const size_t index) {
         return gammaArray[index];
     }
 
+    type at(const size_t index) const {
+        return gammaArray.at(index);
+    }
+    
     type& at(const size_t index) {
         return gammaArray.at(index);
     }
